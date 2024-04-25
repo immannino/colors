@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Site Behavior tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Basic site info-->
+    <meta name="title" data-hid="title" content="">
+    <meta name="description" data-hid="description" content="">
+
+    <!-- Open Graph (Facebook/Linkedin) tags -->
+    <!-- Testing tool: https://developers.facebook.com/tools/debug/ -->
+    <meta property="og:site_name" content="">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="http://">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <!-- Twitter tags -->
+    <!-- Testing tool: https://cards-dev.twitter.com/validator -->
+    <meta name="twitter:site" content="http://">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:image:alt" content="">
+    <title>Vue Template | spaghet</title>
+    
+    <!-- Inline SVG Emoji Icon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-toast-notification@2"></script>
+    <link href="https://cdn.jsdelivr.net/npm/vue-toast-notification@2/dist/theme-sugar.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
+    <!-- New.css
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">  -->
+
+    <!-- Magick CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/normalize.css">
+</head>
+<body>
+    <div id="app" class="honk-stuff">
+        <main @click="next()" :style="`background-color: ${colors[color]}`">
+            <button @click="fs" class="fs">Full Screen</button>
+            <h1>{{ colors[color] }}</h1>
+        </main>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            el: '#app',
+            data() {
+                return {
+                    color: 0,
+                    colors: ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'brown', 'black', 'white']
+                }
+            },
+            mounted() {
+            },
+            methods: {
+                fs() {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                },
+                next() {
+                    if (this.color === (this.colors.length - 1)) {
+                        this.color = 0;
+                        this.speak();
+                        return
+                    }
+
+                    this.color += 1
+                    this.speak();
+                },
+                speak() {
+                    const utterance = new SpeechSynthesisUtterance(this.colors[this.color]);
+                    speechSynthesis.speak(utterance)
+                }
+            }
+        })
+        app.use(VueToast)
+        app.mount('#app');
+    </script>
+    <style>
+        html, body, h1 { padding: 0; margin: 0; }
+        html, body { height: 100vh; width: 100vw; font-family: comic}
+
+        main {
+            height: 100vh;
+            width: 100vw;
+            display: grid;
+            place-content: center;
+            position: relative;
+        }
+
+        .fs {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+        .honk-stuff {
+            font-family: "Honk", system-ui;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-variation-settings:
+                "MORF" 15,
+                "SHLN" 50;
+        }
+
+        h1 {
+            font-size: 5rem;
+        }
+
+        @media screen and (min-width: 765px) {
+            h1 { font-size: 10rem; }
+        }
+    </style>
+</body>
+</html>
